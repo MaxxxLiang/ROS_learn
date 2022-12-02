@@ -1,0 +1,8 @@
+prefix=/home/kk/car/devel
+
+Name: plugin_rtt_star
+Description: Description of plugin_rtt_star
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

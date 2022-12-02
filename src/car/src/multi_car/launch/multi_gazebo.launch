@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- 加载world模型到gazebo中去 -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- 加载world模型 -->
+        <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_world.world" />
+        <!-- 在暂停的状态下启动Gazebo -->
+        <arg name="paused" value="false"/>
+        <!-- 告诉要求时间的ROS节点获得Gazebo发布的模拟时间，通过ROS主题/clock发布（默认为true）。 -->
+        <arg name="use_sim_time" value="true"/>
+        <!-- 启动Gazebo的用户界面窗口（默认为true）。 -->
+        <arg name="gui" value="true"/>
+        <!-- 启用Gazebo状态日志记录 -->
+        <arg name="headless" value="false"/>
+        <!-- 使用gdb在调试模式下启动gzserver（Gazebo服务器）（默认为false） -->
+        <arg name="debug" value="false"/>
+    </include>
+    
+
+    <!-- 定义机器人模型 -->
+    <arg name="model" default="burger"/>
+
+
+    <!-- 定义三个机器人参数 -->
+    <arg name="first_tb3"  default="tb3_0"/>
+    <arg name="second_tb3" default="tb3_1"/>
+    <arg name="third_tb3" default="tb3_2"/>
+
+    <!-- 第一个机器人的位置信息 -->
+    <arg name="first_tb3_x_pos" default="0.0"/>
+    <arg name="first_tb3_y_pos" default="2.0"/>
+    <arg name="first_tb3_z_pos" default="0.0"/>
+    <arg name="first_tb3_yaw"   default="0.0"/>
+
+    <!-- 第二个机器人的位置信息 -->
+    <arg name="second_tb3_x_pos" default=" 0.0"/>
+    <arg name="second_tb3_y_pos" default="-2.0"/>
+    <arg name="second_tb3_z_pos" default=" 0.0"/>
+    <arg name="second_tb3_yaw"   default=" 0.0"/>
+
+    <!-- 第三个机器人的位置信息 -->
+    <arg name="third_tb3_x_pos" default=" 0.5"/>
+    <arg name="third_tb3_y_pos" default=" 0.0"/>
+    <arg name="third_tb3_z_pos" default=" 0.0"/>
+    <arg name="third_tb3_yaw"   default=" 0.0"/>
+
+
+    <!-- 定义第一个机器人信息 -->
+    <group ns = "$(arg first_tb3)">
+        <!-- 定义节点发布状态 -->
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+            <param name="publish_frequency" type="double" value="50.0" />
+            <param name="tf_prefix" value="$(arg first_tb3)" />
+        </node>
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+        <!-- 定义机器人描述文件 -->
+        <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_car)/urdf/turtlebot.xacro" />
+        <!-- gazebo产生机器人 -->
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg first_tb3) -x $(arg first_tb3_x_pos) -y $(arg first_tb3_y_pos) -z $(arg first_tb3_z_pos) -Y $(arg first_tb3_yaw) -param robot_description" />
+    </group>
+
+    <!-- 定义第二个机器人 -->
+    <group ns = "$(arg second_tb3)">
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+            <param name="publish_frequency" type="double" value="50.0" />
+            <param name="tf_prefix" value="$(arg second_tb3)" />
+        </node>
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+        <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_car)/urdf/turtlebot.xacro" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg second_tb3) -x $(arg second_tb3_x_pos) -y $(arg second_tb3_y_pos) -z $(arg second_tb3_z_pos) -Y $(arg second_tb3_yaw) -param robot_description" />
+    </group>
+
+    <!-- 定义第三个机器人 -->
+    <group ns = "$(arg third_tb3)">
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+            <param name="publish_frequency" type="double" value="50.0" />
+            <param name="tf_prefix" value="$(arg third_tb3)" />
+        </node>
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+        <param name="robot_description" command="$(find xacro)/xacro --inorder $(find multi_car)/urdf/turtlebot.xacro" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg third_tb3) -x $(arg third_tb3_x_pos) -y $(arg third_tb3_y_pos) -z $(arg third_tb3_z_pos) -Y $(arg third_tb3_yaw) -param robot_description" />
+    </group>
+
+</launch>

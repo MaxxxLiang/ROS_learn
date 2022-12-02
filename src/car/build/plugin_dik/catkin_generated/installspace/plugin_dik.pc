@@ -1,0 +1,8 @@
+prefix=/home/kk/car/install
+
+Name: plugin_dik
+Description: Description of plugin_dik
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lnavfn
+Requires: geometry_msgs message_runtime nav_core nav_msgs pluginlib roscpp sensor_msgs visualization_msgs

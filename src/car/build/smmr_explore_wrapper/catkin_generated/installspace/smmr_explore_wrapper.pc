@@ -1,0 +1,8 @@
+prefix=/home/kk/car/install
+
+Name: smmr_explore_wrapper
+Description: Description of smmr_explore_wrapper
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

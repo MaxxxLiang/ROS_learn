@@ -1,0 +1,2 @@
+alo_test:min_car:multi_car:plugin_dik:plugin_rtt_star:plugin_test
+-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCATKIN_DEVEL_PREFIX=/home/maxl/demo05_ws/src/car/devel -DCMAKE_INSTALL_PREFIX=/home/maxl/demo05_ws/src/car/install -G Unix Makefiles

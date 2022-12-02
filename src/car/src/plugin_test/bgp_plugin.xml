@@ -1,0 +1,5 @@
+<library path="lib/libplugin_test">
+  <class name="plugin_test/GlobalPlanner" type="global_planner::GlobalPlanner" base_class_type="nav_core::BaseGlobalPlanner">
+    <description>This is a my global planner plugin for ROS.</description>
+  </class>
+ </library>

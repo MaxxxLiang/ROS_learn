@@ -1,0 +1,8 @@
+prefix=/home/kk/car/devel
+
+Name: min_car
+Description: Description of min_car
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

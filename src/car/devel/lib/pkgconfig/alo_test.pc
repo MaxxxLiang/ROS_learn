@@ -1,0 +1,8 @@
+prefix=/home/kk/car/devel
+
+Name: alo_test
+Description: Description of alo_test
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

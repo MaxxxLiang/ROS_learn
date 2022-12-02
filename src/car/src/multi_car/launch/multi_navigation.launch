@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- 定义机器人参数 -->
+    <arg name="tb3_0_init_x" default="0.0"/>
+    <arg name="tb3_0_init_y" default="2.0"/>
+    <arg name="tb3_0_init_a" default="0.0"/>
+
+    <arg name="tb3_1_init_x" default="0.0"/>
+    <arg name="tb3_1_init_y" default="-2.0"/>
+    <arg name="tb3_1_init_a" default="0.0"/>
+
+    <arg name="tb3_2_init_x" default="0.5"/>
+    <arg name="tb3_2_init_y" default="0.0"/>
+    <arg name="tb3_2_init_a" default="0.0"/>
+
+
+    <!-- 加载地图参数 -->
+    <arg name="map_file" default="$(find turtlebot3_navigation)/maps/map.yaml"/>
+
+    <arg name="model" default="burger"/>
+    <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro'" />
+
+    <!-- Loads robot_description to parameter server from URDF file-->
+    <param name="robot_description" command="$(arg urdf_file)" />
+
+    <!-- 开启地图话题 -->
+    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+    <!-- 第一个机器人设置 -->
+    <group ns="tb3_0">
+
+        <!-- AMCL -->
+        <node pkg="amcl" type="amcl" name="amcl">
+            <!-- Load default parameters for turtlebot -->
+            <rosparam file="$(find min_car)/param/amcl_params.yaml" command="load" />
+            <param name="initial_pose_x" value="$(arg tb3_0_init_x)"/>
+            <param name="initial_pose_y" value="$(arg tb3_0_init_y)"/>
+            <param name="initial_pose_a" value="$(arg tb3_0_init_a)"/>
+            <param name="global_frame_id" value="/map"/>
+            <param name="odom_frame_id"  value="tb3_0/odom"/>
+            <param name="base_frame_id"  value="tb3_0/base_footprint"/>
+
+            <!-- Use the single map server -->
+            <remap from="static_map" to="/static_map"/>
+        </node>
+    </group>
+
+    <!-- 第二个机器人设置 -->
+    <group ns="tb3_1">
+        <!-- AMCL -->
+        <node pkg="amcl" type="amcl" name="amcl">
+            <!-- Load default parameters for turtlebot -->
+            <rosparam file="$(find min_car)/param/amcl_params.yaml" command="load" />
+            <param name="initial_pose_x" value="$(arg tb3_1_init_x)"/>
+            <param name="initial_pose_y" value="$(arg tb3_1_init_y)"/>
+            <param name="initial_pose_a" value="$(arg tb3_1_init_a)"/>
+
+            <param name="odom_frame_id"  value="tb3_1/odom"/>
+            <param name="base_frame_id"  value="tb3_1/base_footprint"/>
+
+            <!-- Use the single map server -->
+            <remap from="static_map" to="/static_map"/>
+
+        </node>
+    </group>
+
+    <!-- 第二个机器人设置 -->
+    <group ns="tb3_2">
+        <!-- AMCL -->
+        <node pkg="amcl" type="amcl" name="amcl">
+            <!-- Load default parameters for turtlebot -->
+            <rosparam file="$(find min_car)/param/amcl_params.yaml" command="load" />
+            <param name="initial_pose_x" value="$(arg tb3_2_init_x)"/>
+            <param name="initial_pose_y" value="$(arg tb3_2_init_y)"/>
+            <param name="initial_pose_a" value="$(arg tb3_2_init_a)"/>
+
+            <param name="odom_frame_id"  value="tb3_2/odom"/>
+            <param name="base_frame_id"  value="tb3_2/base_footprint"/>
+
+            <!-- Use the single map server -->
+            <remap from="static_map" to="/static_map"/>
+
+        </node>
+    </group>
+
+    <!-- 启动rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+         args="-d $(find multi_car)/rviz/multi_car.rviz"/>
+
+
+</launch>
